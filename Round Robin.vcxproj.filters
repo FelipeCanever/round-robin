@@ -2,5 +2,27 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Process.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Process">
+      <UniqueIdentifier>{e36c17ec-7006-4ef2-9714-54f458f6e092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{be147143-b05d-4f5e-b0c1-cf6a802a7cdd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Process.hpp">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.hpp">
+      <Filter>Time</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
