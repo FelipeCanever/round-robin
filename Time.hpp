@@ -15,6 +15,8 @@ namespace roundRobin
 		friend auto operator << (std::ostream& ostream, Time time) -> std::ostream&;
 		friend auto operator >> (std::istream& istream, Time& time) -> std::istream&;
 
+		friend auto operator < (Time a, Time b) -> bool;
+
 	private:
 		T _value;
 		static auto validate(T value) -> T;

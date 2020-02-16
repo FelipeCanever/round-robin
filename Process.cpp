@@ -14,6 +14,16 @@ namespace roundRobin
 		assert(this->id() >= 0);
 	}
 
+	auto Process::operator = (Process const& process) -> Process&
+	{
+		this->_id = process.id();
+		this->priority(process.priority());
+		this->_executeTime = process.executeTime();
+		this->_arrivalTime = process.arrivalTime();
+
+		return *this;
+	}
+
 	auto Process::id() const -> int
 	{
 		return this->_id;

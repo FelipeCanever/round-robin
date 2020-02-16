@@ -1,3 +1,8 @@
+#include <algorithm>
+using std::begin;
+using std::end;
+using std::sort;
+
 #include <iomanip>
 using std::left;
 using std::setw;
@@ -54,6 +59,16 @@ auto main() -> int
 	cout << "\n";
 
 	cout << processes << "\n";
+
+	sort
+	(
+		begin(processes), end(processes),
+
+		[](Process const& a, Process const& b)
+		{
+			return a.arrivalTime() < b.arrivalTime();
+		}
+	);
 }
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&

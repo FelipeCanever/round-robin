@@ -14,6 +14,8 @@ namespace roundRobin
 
 		Process(Priority priority, Time executeTime, Time arrivalTime);
 
+		auto operator = (Process const& process) -> Process&;
+
 		auto id() const -> int;
 
 		auto priority() const -> Priority;
@@ -23,11 +25,11 @@ namespace roundRobin
 		auto arrivalTime() const -> Time;
 
 	private:
-		const int _id;
+		int _id;
 
 		Priority _priority;
 
-		const Time _executeTime;
-		const Time _arrivalTime;
+		Time _executeTime;
+		Time _arrivalTime;
 	};
 }

@@ -27,6 +27,11 @@ namespace roundRobin
 		return istream;
 	}
 
+	auto operator < (Time a, Time b) -> bool
+	{
+		return a._value < b._value;
+	}
+
 	auto Time::validate(T const value) -> T
 	{
 		if (value < 0)
