@@ -16,10 +16,10 @@ namespace roundRobin
 
 		auto id() const -> int;
 
-		auto priority() const->Priority;
+		auto priority() const -> Priority;
 		auto priority(Priority priority) -> void;
 
-		auto executeTime() const->Time;
+		auto executeTime() const -> Time;
 		auto arrivalTime() const -> Time;
 
 	private:
