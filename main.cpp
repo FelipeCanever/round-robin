@@ -1,3 +1,7 @@
+#include <iomanip>
+using std::left;
+using std::setw;
+
 #include <iostream>
 using std::cin;
 using std::cout;
@@ -54,17 +58,25 @@ auto main() -> int
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
 {
-	ostream << "PROCESS" << "\t\t";
-	ostream << "PRIORITY" << "\t";
-	ostream << "EXECUTE TIME (ms)" << "\t";
-	ostream << "ARRIVAL TIME (ms)" << "\n";
+	static constexpr auto columnWidth = 20;
+
+	ostream << left;
+
+	ostream << setw(columnWidth) << "PROCESS";
+	ostream << setw(columnWidth) << "PRIORITY";
+	ostream << setw(columnWidth) << "EXECUTE TIME (ms)";
+	ostream << setw(columnWidth) << "ARRIVAL TIME (ms)";
+
+	ostream << "\n";
 
 	for (auto const& process : processes)
 	{
-		ostream << process.id() << "\t\t";
-		ostream << process.priority() << "\t\t";
-		ostream << process.executeTime() << "\t\t\t";
-		ostream << process.arrivalTime() << "\n";
+		ostream << setw(columnWidth) << process.id();
+		ostream << setw(columnWidth) << process.priority();
+		ostream << setw(columnWidth) << process.executeTime();
+		ostream << setw(columnWidth) << process.arrivalTime();
+
+		ostream << "\n";
 	}
 
 	return ostream;
