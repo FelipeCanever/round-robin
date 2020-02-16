@@ -9,6 +9,10 @@ using std::vector;
 using roundRobin::Process;
 using roundRobin::Time;
 
+using Processes = vector<Process>;
+
+auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&;
+
 auto main() -> int
 {
 	cout << "ROUND-ROBIN SCHEDULING" << "\n\n";
@@ -18,7 +22,7 @@ auto main() -> int
 	cin >> n;
 	cout << "\n";
 
-	auto processes = vector<Process>{};
+	auto processes = Processes{};
 
 	for (auto i = 0; i < n; ++i)
 	{
@@ -42,4 +46,26 @@ auto main() -> int
 
 		cout << "\n";
 	}
+
+	cout << "\n";
+
+	cout << processes << "\n";
+}
+
+auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
+{
+	ostream << "PROCESS" << "\t\t";
+	ostream << "PRIORITY" << "\t";
+	ostream << "EXECUTE TIME (ms)" << "\t";
+	ostream << "ARRIVAL TIME (ms)" << "\n";
+
+	for (auto const& process : processes)
+	{
+		ostream << process.id() << "\t\t";
+		ostream << process.priority() << "\t\t";
+		ostream << process.executeTime() << "\t\t\t";
+		ostream << process.arrivalTime() << "\n";
+	}
+
+	return ostream;
 }

@@ -13,6 +13,11 @@ namespace roundRobin
 		Time{0}
 	{}
 
+	auto operator << (std::ostream& ostream, Time time) -> std::ostream&
+	{
+		return ostream << time._value;
+	}
+
 	auto operator >> (std::istream& istream, Time& time) -> std::istream&
 	{
 		auto value = Time::T{};
