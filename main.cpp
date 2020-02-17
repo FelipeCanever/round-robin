@@ -3,6 +3,10 @@ using std::begin;
 using std::end;
 using std::sort;
 
+#include <cmath>
+using std::floor;
+using std::log10;
+
 #include <iomanip>
 using std::left;
 using std::setw;
