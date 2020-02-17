@@ -11,6 +11,9 @@ using std::setw;
 using std::cin;
 using std::cout;
 
+#include <string>
+using std::string;
+
 #include <vector>
 using std::vector;
 
@@ -22,8 +25,10 @@ using roundRobin::Time;
 using roundRobin::Timestamp;
 
 using Processes = vector<Process>;
+using Timestamps = vector<Timestamp>;
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&;
+auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::ostream&;
 
 auto main() -> int
 {
@@ -86,7 +91,7 @@ auto main() -> int
 	cin >> quantum;
 	cout << "\n";
 
-	auto timestamps = vector<Timestamp>{};
+	auto timestamps = Timestamps{};
 
 	do
 	{
@@ -116,6 +121,11 @@ auto main() -> int
 		}
 	}
 	while (numberZeros < n);
+
+	cout << "\n\n";
+
+	cout << "GANTT CHART" << "\n";
+	cout << timestamps << "\n\n";
 }
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
@@ -142,4 +152,79 @@ auto operator << (std::ostream& ostream, Processes const& processes) -> std::ost
 	}
 
 	return ostream;
+}
+
+auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::ostream&
+{
+	static auto const delimiter = string{"|"};
+	static auto const toBeRenamed = string{" - "};
+
+	// Processes
+
+	for (auto _ : delimiter)
+		ostream << " ";
+
+	for (auto const& timestamp : timestamps)
+	{
+		for (auto i = 0; i < timestamp.time; ++i)
+			if (i == timestamp.time / 2)
+				ostream << " " << timestamp.process.id << " ";
+			else
+				for (auto _ : toBeRenamed)
+					ostream << " ";
+
+		for (auto _ : delimiter)
+			ostream << " ";
+	}
+
+	ostream << "\n";
+
+	// Timeline
+
+	ostream << delimiter;
+
+	for (auto const& timestamp : timestamps)
+	{
+		for (auto i = 0; i < timestamp.time; ++i)
+			ostream << toBeRenamed;
+
+		ostream << delimiter;
+	}
+
+	ostream << "\n";
+
+	// Times
+	
+	auto time = Time{0};
+	ostream << time;
+
+	auto constexpr numberDigits = [](auto number)
+	{
+		auto n = 0;
+
+		do
+		{
+			number /= 10;
+			++n;
+		}
+		while (number > 0);
+
+		return n;
+	};
+
+	auto size = numberDigits(static_cast<Time::T>(time));
+
+	for (auto const& timestamp : timestamps)
+	{
+		time += timestamp.time;
+
+		for (auto i = 0; i < timestamp.time; ++i)
+			for (auto j = 0; j < toBeRenamed.size() - (i == 0 ? size - 1 : 0); ++j)
+				ostream << " ";
+
+		size = numberDigits(static_cast<Time::T>(time));
+		ostream << time;
+	}
+
+	return ostream << " (ms)";
 }
