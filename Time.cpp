@@ -20,12 +20,14 @@ namespace roundRobin
 
 	auto operator += (Time& a, Time b) -> Time&
 	{
-		return a += b._value;
+		a._value += b._value;
+		return a;
 	}
 
 	auto operator -= (Time& a, Time b) -> Time&
 	{
-		return a -= b._value;
+		a._value -= b._value;
+		return a;
 	}
 
 	auto operator << (std::ostream& ostream, Time time) -> std::ostream&
