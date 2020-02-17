@@ -20,6 +20,8 @@ namespace roundRobin
 		this->priority = process.priority;
 		this->executeTime = process.executeTime;
 		this->arrivalTime = process.arrivalTime;
+		this->waitTime = process.waitTime;
+		this->endTime = process.endTime;
 
 		return *this;
 	}

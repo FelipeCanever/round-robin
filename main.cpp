@@ -3,10 +3,6 @@ using std::begin;
 using std::end;
 using std::sort;
 
-#include <cmath>
-using std::floor;
-using std::log10;
-
 #include <iomanip>
 using std::left;
 using std::setw;
@@ -130,6 +126,42 @@ auto main() -> int
 
 	cout << "GANTT CHART" << "\n";
 	cout << timestamps << "\n\n";
+
+	sort
+	(
+		begin(processes), end(processes),
+
+		[](Process const& a, Process const& b)
+		{
+			return a.id < b.id;
+		}
+	);
+
+	auto columnWidth = 16;
+
+	cout << setw(columnWidth) << "PROCESS";
+	cout << setw(columnWidth) << "WAIT TIME (ms)";
+	cout << "\n";
+
+	auto totalWaitTime = Time{0};
+
+	for (auto const& process : processes)
+	{
+		cout << setw(columnWidth) << process.id;
+		cout << setw(columnWidth) << process.waitTime;
+		cout << "\n";
+
+		totalWaitTime += process.waitTime;
+	}
+
+	cout << "\n";
+
+	columnWidth = 19;
+
+	cout << setw(columnWidth) << "TOTAL WAIT TIME" << setw(columnWidth) << totalWaitTime << "ms" << "\n";
+	cout << setw(columnWidth) << "AVERAGE WAIT TIME" << setw(columnWidth) << static_cast<double>(totalWaitTime) / n << "ms" << "\n";
+
+	cout << "\n";
 }
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
@@ -161,7 +193,7 @@ auto operator << (std::ostream& ostream, Processes const& processes) -> std::ost
 auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::ostream&
 {
 	static auto const delimiter = string{"|"};
-	static auto const toBeRenamed = string{" - "};
+	static auto const unit = string{" - "};
 
 	// Processes
 
@@ -174,7 +206,7 @@ auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::o
 			if (i == timestamp.time / 2)
 				ostream << " " << timestamp.process.id << " ";
 			else
-				for (auto _ : toBeRenamed)
+				for (auto _ : unit)
 					ostream << " ";
 
 		for (auto _ : delimiter)
@@ -190,7 +222,7 @@ auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::o
 	for (auto const& timestamp : timestamps)
 	{
 		for (auto i = 0; i < timestamp.time; ++i)
-			ostream << toBeRenamed;
+			ostream << unit;
 
 		ostream << delimiter;
 	}
@@ -223,7 +255,7 @@ auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::o
 		time += timestamp.time;
 
 		for (auto i = 0; i < timestamp.time; ++i)
-			for (auto j = 0; j < toBeRenamed.size() - (i == 0 ? size - 1 : 0); ++j)
+			for (auto j = 0; j < unit.size() - (i == 0 ? size - 1 : 0); ++j)
 				ostream << " ";
 
 		size = numberDigits(static_cast<Time::T>(time));
