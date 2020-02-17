@@ -4,7 +4,7 @@
 
 namespace roundRobin
 {
-	class Process
+	struct Process
 	{
 	private:
 		static int numberOfProcesses;
@@ -12,24 +12,17 @@ namespace roundRobin
 	public:
 		using Priority = int;
 
+		int id;
+
+		Priority priority;
+
+		Time executeTime;
+		Time arrivalTime;
+
+		Time waitTime;
+		Time endTime;
+
 		Process(Priority priority, Time executeTime, Time arrivalTime);
-
 		auto operator = (Process const& process) -> Process&;
-
-		auto id() const -> int;
-
-		auto priority() const -> Priority;
-		auto priority(Priority priority) -> void;
-
-		auto executeTime() const -> Time;
-		auto arrivalTime() const -> Time;
-
-	private:
-		int _id;
-
-		Priority _priority;
-
-		Time _executeTime;
-		Time _arrivalTime;
 	};
 }

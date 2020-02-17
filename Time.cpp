@@ -13,6 +13,21 @@ namespace roundRobin
 		Time{0}
 	{}
 
+	Time::operator T() const
+	{
+		return this->_value;
+	}
+
+	auto operator += (Time& a, Time b) -> Time&
+	{
+		return a += b._value;
+	}
+
+	auto operator -= (Time& a, Time b) -> Time&
+	{
+		return a -= b._value;
+	}
+
 	auto operator << (std::ostream& ostream, Time time) -> std::ostream&
 	{
 		return ostream << time._value;
@@ -25,11 +40,6 @@ namespace roundRobin
 		time = value;
 
 		return istream;
-	}
-
-	auto operator < (Time a, Time b) -> bool
-	{
-		return a._value < b._value;
 	}
 
 	auto Time::validate(T const value) -> T

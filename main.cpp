@@ -18,6 +18,9 @@ using std::vector;
 using roundRobin::Process;
 using roundRobin::Time;
 
+#include "Timestamp.hpp"
+using roundRobin::Timestamp;
+
 using Processes = vector<Process>;
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&;
@@ -50,7 +53,7 @@ auto main() -> int
 		cin >> arrivalTime;
 
 		auto process = Process{priority, executeTime, arrivalTime};
-		cout << "Id" << ":\t\t\t" << process.id() << "\n";
+		cout << "Id" << ":\t\t\t" << process.id << "\n";
 		processes.push_back(process);
 
 		cout << "\n";
@@ -66,9 +69,53 @@ auto main() -> int
 
 		[](Process const& a, Process const& b)
 		{
-			return a.arrivalTime() < b.arrivalTime();
+			return a.arrivalTime < b.arrivalTime;
 		}
 	);
+
+	auto remainingExecuteTimes = vector<Time>(n);
+
+	for (auto i = 0; i < n; ++i)
+		remainingExecuteTimes[i] = processes[i].executeTime;
+
+	auto time = Time{};
+	auto numberZeros = 0;
+
+	cout << "Quantum (ms): ";
+	auto quantum = Time{};
+	cin >> quantum;
+	cout << "\n";
+
+	auto timestamps = vector<Timestamp>{};
+
+	do
+	{
+		numberZeros = 0;
+
+		for (auto i = 0; i < n; ++i)
+		{
+			auto const difference = static_cast<Time::T>(remainingExecuteTimes[i]) - static_cast<Time::T>(quantum);
+			auto const deltaT = difference > 0 ? quantum : remainingExecuteTimes[i];
+
+			remainingExecuteTimes[i] -= deltaT;
+			time += deltaT;
+
+			if (difference <= 0)
+			{
+				if (deltaT != 0)
+				{
+					processes[i].endTime = time;
+					processes[i].waitTime = processes[i].endTime - processes[i].arrivalTime - processes[i].executeTime;
+				}
+
+				++numberZeros;
+			}
+
+			if (deltaT != 0)
+				timestamps.push_back({processes[i], deltaT});
+		}
+	}
+	while (numberZeros < n);
 }
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
@@ -86,10 +133,10 @@ auto operator << (std::ostream& ostream, Processes const& processes) -> std::ost
 
 	for (auto const& process : processes)
 	{
-		ostream << setw(columnWidth) << process.id();
-		ostream << setw(columnWidth) << process.priority();
-		ostream << setw(columnWidth) << process.executeTime();
-		ostream << setw(columnWidth) << process.arrivalTime();
+		ostream << setw(columnWidth) << process.id;
+		ostream << setw(columnWidth) << process.priority;
+		ostream << setw(columnWidth) << process.executeTime;
+		ostream << setw(columnWidth) << process.arrivalTime;
 
 		ostream << "\n";
 	}

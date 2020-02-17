@@ -12,10 +12,13 @@ namespace roundRobin
 		Time(T value);
 		Time();
 
+		operator T() const;
+
+		friend auto operator += (Time& a, Time b) -> Time&;
+		friend auto operator -= (Time& a, Time b) -> Time&;
+
 		friend auto operator << (std::ostream& ostream, Time time) -> std::ostream&;
 		friend auto operator >> (std::istream& istream, Time& time) -> std::istream&;
-
-		friend auto operator < (Time a, Time b) -> bool;
 
 	private:
 		T _value;

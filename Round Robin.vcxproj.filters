@@ -24,5 +24,6 @@
     <ClInclude Include="Time.hpp">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="Timestamp.hpp" />
   </ItemGroup>
 </Project>
