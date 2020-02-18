@@ -1,6 +1,6 @@
 # Round-robin Scheduling Simulation
 
-This a small and very simple console program simulating the Round-robin scheduling algorithm. It was originally created in C around 2017 as a small college project. This is a rewrite of said program in C++17 and to English (originally in Portuguese).
+This is a small and very simple console program simulating the Round-robin scheduling algorithm. It was originally created in C around 2017 as a small college project. This is a rewrite of said program in C++17, which has also been translated to English (originally in Portuguese).
 
 ## Getting Started
 
