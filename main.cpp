@@ -14,6 +14,9 @@ using std::cout;
 #include <string>
 using std::string;
 
+#include <string_view>
+using std::string_view;
+
 #include <vector>
 using std::vector;
 
@@ -27,6 +30,9 @@ using roundRobin::Timestamp;
 using Processes = vector<Process>;
 using Timestamps = vector<Timestamp>;
 
+template<typename T>
+auto input(string_view prompt, std::ostream& ostream = cout, std::istream& istream = cin) -> T;
+
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&;
 auto operator << (std::ostream& ostream, Timestamps const& timestamps) -> std::ostream&;
 
@@ -34,9 +40,7 @@ auto main() -> int
 {
 	cout << "ROUND-ROBIN SCHEDULING" << "\n\n";
 
-	cout << "Number of processes: ";
-	auto n = int{};
-	cin >> n;
+	auto const n = input<int>("Number of processes");
 	cout << "\n";
 
 	auto processes = Processes{};
@@ -45,20 +49,12 @@ auto main() -> int
 	{
 		cout << "PROCESS #" << i << "\n";
 
-		cout << "Priority" << ":\t\t";
-		auto priority = Process::Priority{};
-		cin >> priority;
-
-		cout << "Execute time (ms)" << ":\t";
-		auto executeTime = Time{};
-		cin >> executeTime;
-
-		cout << "Arrival time (ms)" << ":\t";
-		auto arrivalTime = Time{};
-		cin >> arrivalTime;
+		auto const priority = input<Process::Priority>("Priority");
+		auto const executeTime = input<Time>("Execute time");
+		auto const arrivalTime = input<Time>("Arrival time");
 
 		auto process = Process{priority, executeTime, arrivalTime};
-		cout << "Id" << ":\t\t\t" << process.id << "\n";
+		cout << "Id: " << process.id << "\n";
 		processes.push_back(process);
 
 		cout << "\n";
@@ -86,9 +82,7 @@ auto main() -> int
 	auto time = Time{};
 	auto numberZeros = 0;
 
-	cout << "Quantum (ms): ";
-	auto quantum = Time{};
-	cin >> quantum;
+	auto const quantum = input<Time>("Quantum (ms)");
 	cout << "\n";
 
 	auto timestamps = Timestamps{};
@@ -162,6 +156,16 @@ auto main() -> int
 	cout << setw(columnWidth) << "AVERAGE WAIT TIME" << setw(columnWidth) << static_cast<double>(totalWaitTime) / n << "ms" << "\n";
 
 	cout << "\n";
+}
+
+template<typename T>
+auto input(string_view prompt, std::ostream& ostream, std::istream& istream) -> T
+{
+	ostream << prompt << ": ";
+	auto value = T{};
+	istream >> value;
+
+	return value;
 }
 
 auto operator << (std::ostream& ostream, Processes const& processes) -> std::ostream&
